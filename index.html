@@ -1054,6 +1054,10 @@
                 text = text.replace(regex, replacement);
             });
 
+            // Remove emojis
+            const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]/gu;
+            text = text.replace(emojiRegex, '');
+
             // Remove excessive punctuation
             text = text.replace(/([!?]){2,}/g, '$1');
 
