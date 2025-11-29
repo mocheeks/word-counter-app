@@ -1488,6 +1488,7 @@
             const patterns = {};
             let weightedScore = 0;
             let totalPatterns = 0;
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
 
             // Helper to find and count pattern
             function findPattern(phrase, weight, category) {
@@ -1510,7 +1511,6 @@
             // Check for em dash overuse (weight: 2 per occurrence after threshold)
             if (detectEmDashes) {
                 const emDashes = (text.match(/—/g) || []).length;
-                const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
                 if (words > 50 && emDashes > 1) {
                     const emDashDensity = emDashes / (words / 100);
                     if (emDashDensity > 0.5) {
