@@ -511,7 +511,10 @@
                     Patterns detected: <strong id="patternCount">0</strong>
                     <div id="patternDetails"></div>
                 </div>
-                <button id="cleanBtn" style="margin-top: 15px;">🧹 Clean Patterns</button>
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <button id="cleanBtn">🧹 Clean Patterns</button>
+                    <button id="undoBtn" disabled>↩️ Undo</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1035,8 +1038,14 @@
             currentWordIndex = 0;
         });
 
-        // Clean patterns functionality
+        // Clean patterns functionality with undo
+        let textBeforeClean = '';
+        const undoBtn = document.getElementById('undoBtn');
+
         document.getElementById('cleanBtn').addEventListener('click', () => {
+            // Store current text before cleaning
+            textBeforeClean = textInput.value;
+
             let text = textInput.value;
 
             // Replace AI phrases
@@ -1055,6 +1064,19 @@
 
             textInput.value = text;
             updateStats();
+
+            // Enable undo button
+            undoBtn.disabled = false;
+        });
+
+        // Undo functionality
+        undoBtn.addEventListener('click', () => {
+            if (textBeforeClean !== '') {
+                textInput.value = textBeforeClean;
+                updateStats();
+                undoBtn.disabled = true;
+                textBeforeClean = '';
+            }
         });
 
         // Initialize
