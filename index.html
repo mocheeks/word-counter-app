@@ -1057,10 +1057,10 @@
             // Remove excessive punctuation
             text = text.replace(/([!?]){2,}/g, '$1');
 
-            // Clean up extra spaces from replacements
-            text = text.replace(/\s{2,}/g, ' ');
-            text = text.replace(/\s+\./g, '.');
-            text = text.replace(/\s+,/g, ',');
+            // Clean up extra spaces from replacements (preserve newlines)
+            text = text.replace(/ {2,}/g, ' '); // Only collapse multiple spaces, not newlines
+            text = text.replace(/ +\./g, '.'); // Remove spaces before periods
+            text = text.replace(/ +,/g, ','); // Remove spaces before commas
 
             textInput.value = text;
             updateStats();
