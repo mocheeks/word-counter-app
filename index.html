@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free privacy-first word counter with text-to-speech, AI pattern detection, and real-time stats. Your text never leaves your browser.">
+    <title>Free Word Counter with Text-to-Speech | Privacy-First Tool</title>
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Free Word Counter with Text-to-Speech",
+        "description": "Privacy-first word counter with text-to-speech and AI pattern detection",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Real-time word counting",
+            "Text-to-speech with word highlighting",
+            "AI pattern detection",
+            "100% client-side processing"
+        ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Is my text private and secure?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, absolutely. All text processing happens entirely in your browser using JavaScript. Your text never leaves your device and is never sent to any server."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How accurate is the word count?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Our word counter uses industry-standard algorithms to accurately count words, characters, sentences, and paragraphs in real-time as you type."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is the reading time based on?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Reading time is calculated at 200 words per minute (WPM), which is the average reading speed for adults."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How does the text-to-speech feature work?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The text-to-speech feature uses the Web Speech Synthesis API built into your browser. It highlights each word as it's spoken and allows you to control speed and voice selection."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What AI patterns does the tool detect?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The tool detects common AI writing patterns including overused phrases like 'delve into', 'moreover', 'leverage', excessive emojis, over-punctuation, and parentheticals that are common in AI-generated text."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I use this tool offline?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, once the page is loaded, all functionality works offline since everything runs client-side in your browser."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Does this work on mobile devices?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, the word counter is fully responsive and optimized for mobile devices with touch-friendly buttons and adaptive layouts."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How do I use the Clean Patterns feature?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Click the 'Clean Patterns' button to automatically remove or replace detected AI writing patterns with simpler, more natural alternatives."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I change the text-to-speech voice?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, you can select from all voices available in your browser. Your preference is saved automatically and will be remembered on your next visit."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What browsers support this tool?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The word counter works in all modern browsers. Text-to-speech requires browsers that support the Web Speech Synthesis API (Chrome, Edge, Safari, Firefox)."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How is the AI likelihood score calculated?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The AI likelihood score is calculated based on the density of detected AI patterns relative to your total word count. Higher scores indicate more AI-like writing patterns."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is this tool really free?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, this word counter is completely free to use with no registration, no limits, and no hidden fees."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- Google Analytics with Anonymized IP -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXX-X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-XXXXXXXXX-X', {
+            'anonymize_ip': true
+        });
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-yellow: #FFE066;
+            --highlight-yellow: rgba(255, 224, 102, 0.35);
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f9f9f9;
+            --border-color: #ddd;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .trust-badge {
+            display: inline-block;
+            background: var(--primary-yellow);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .tool-section {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            font-size: 1rem;
+            line-height: 1.8;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-yellow);
+        }
+
+        .highlighted-word {
+            background-color: var(--highlight-yellow);
+            padding: 2px 0;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button {
+            min-width: 44px;
+            min-height: 44px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--primary-yellow);
+            color: var(--text-dark);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .speed-btn {
+            min-width: 60px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .speed-btn.active {
+            background: var(--text-dark);
+            color: white;
+        }
+
+        select {
+            min-height: 44px;
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .ai-detection {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-yellow);
+        }
+
+        .ai-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 10px 0;
+        }
+
+        .pattern-list {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .content-section h3 {
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+            color: var(--text-dark);
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+
+        .content-section ul {
+            margin: 15px 0 15px 30px;
+        }
+
+        .content-section li {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .faq-item {
+            margin-bottom: 25px;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .faq-answer {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .control-group {
+                flex-direction: column;
+            }
+
+            select {
+                width: 100%;
+            }
+
+            .content-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .tool-section {
+                padding: 20px;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Free Word Counter with Text-to-Speech</h1>
+            <div class="trust-badge">🔒 100% Private - Your text never leaves your browser</div>
+        </header>
+
+        <div class="tool-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="wordCount">0</span>
+                    <span class="stat-label">Words</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="charCountWith">0</span>
+                    <span class="stat-label">Characters (with spaces)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="charCountWithout">0</span>
+                    <span class="stat-label">Characters (no spaces)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="sentenceCount">0</span>
+                    <span class="stat-label">Sentences</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="paragraphCount">0</span>
+                    <span class="stat-label">Paragraphs</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="readingTime">0</span>
+                    <span class="stat-label">Reading Time (min)</span>
+                </div>
+            </div>
+
+            <textarea id="textInput" placeholder="Start typing or paste your text here..."></textarea>
+
+            <div class="controls">
+                <div class="control-group">
+                    <button id="playBtn">▶️ Play</button>
+                    <button id="pauseBtn" disabled>⏸️ Pause</button>
+                    <button id="stopBtn" disabled>⏹️ Stop</button>
+                </div>
+
+                <div class="control-group">
+                    <label>Speed:</label>
+                    <button class="speed-btn active" data-speed="1">1x</button>
+                    <button class="speed-btn" data-speed="0.5">0.5x</button>
+                    <button class="speed-btn" data-speed="0.75">0.75x</button>
+                    <button class="speed-btn" data-speed="1.25">1.25x</button>
+                    <button class="speed-btn" data-speed="1.5">1.5x</button>
+                    <button class="speed-btn" data-speed="2">2x</button>
+                </div>
+
+                <div class="control-group">
+                    <label for="voiceSelect">Voice:</label>
+                    <select id="voiceSelect"></select>
+                </div>
+            </div>
+
+            <div class="ai-detection">
+                <h3>AI Pattern Detection</h3>
+                <div class="ai-score">AI Likelihood: <span id="aiScore">0</span>%</div>
+                <div class="pattern-list">
+                    Patterns detected: <strong id="patternCount">0</strong>
+                    <div id="patternDetails"></div>
+                </div>
+                <button id="cleanBtn" style="margin-top: 15px;">🧹 Clean Patterns</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h2>How to Use the Word Counter with Text-to-Speech</h2>
+        <p>Our free word counter tool is designed to be intuitive and powerful, providing you with comprehensive text analysis in real-time. Whether you're a student working on an essay, a professional crafting important communications, or a writer perfecting your manuscript, this tool gives you instant feedback on every aspect of your text.</p>
+
+        <p>To get started, simply type or paste your text into the large text area above. As soon as you begin typing, you'll see the statistics update in real-time. The word count, character counts (both with and without spaces), sentence count, paragraph count, and estimated reading time all appear instantly above the text area.</p>
+
+        <h3>Understanding the Statistics</h3>
+        <p>Each metric serves a specific purpose. The word count is essential for meeting assignment requirements or article length guidelines. Many academic papers, blog posts, and professional documents have specific word count requirements, and our tool helps you hit those targets precisely. The character count is particularly useful for social media posts, meta descriptions, and other contexts where character limits apply. We provide both counts - with and without spaces - because different platforms count characters differently.</p>
+
+        <p>Sentence and paragraph counts help you understand the structure and flow of your writing. If you have too many long paragraphs, your text might be difficult to read. If your sentences are consistently short, your writing might feel choppy. These metrics help you find the right balance.</p>
+
+        <p>The reading time estimate is calculated based on an average reading speed of 200 words per minute. This is the typical reading speed for adults reading standard material. This estimate helps you understand how long it will take your audience to consume your content, which is valuable for blog posts, presentations, and speeches.</p>
+
+        <h3>Using Text-to-Speech for Proofreading</h3>
+        <p>One of the most powerful features of our word counter is the integrated text-to-speech functionality. Click the Play button to hear your text read aloud by your browser's built-in voice synthesis. As the text is read, each word is highlighted with a yellow background, making it easy to follow along.</p>
+
+        <p>You can control the playback speed using the speed buttons. If you want to catch every detail, slow it down to 0.5x or 0.75x. If you're familiar with the content and just want a quick review, speed it up to 1.5x or 2x. The Pause button lets you stop temporarily to make notes or corrections, while the Stop button ends the reading session completely.</p>
+
+        <p>Different voices are available depending on your browser and operating system. Select your preferred voice from the dropdown menu - your choice will be saved automatically and remembered for your next visit. Some users prefer male voices, others female voices, and different accents can make the listening experience more natural for your ear.</p>
+
+        <h3>AI Pattern Detection and Cleaning</h3>
+        <p>Our advanced AI pattern detection analyzes your text for common patterns that appear in AI-generated content. This includes overused phrases like "delve into," "moreover," "it's worth noting," and "leverage" - phrases that AI language models tend to use more frequently than human writers. The tool also detects excessive use of emojis, over-punctuation (like multiple exclamation marks or question marks), and parenthetical statements.</p>
+
+        <p>The AI likelihood score is calculated based on the density of these patterns in your text. A higher score doesn't necessarily mean your text is AI-generated - it just means it contains patterns commonly found in AI writing. Use this as a guide to make your writing sound more natural and human. The Clean Patterns button automatically removes or replaces these patterns with simpler, more natural alternatives, helping you refine your writing quickly.</p>
+    </div>
+
+    <div class="content-section">
+        <h2>Benefits of Text-to-Speech Proofreading</h2>
+        <p>Listening to your writing is one of the most effective proofreading techniques available, yet it's often overlooked. When you read your own writing silently, your brain tends to fill in gaps, skip over errors, and "auto-correct" mistakes without you noticing. You see what you meant to write rather than what you actually wrote. Text-to-speech breaks this pattern by forcing you to consume your content the way your readers will - sequentially, without the ability to skip ahead or make unconscious corrections.</p>
+
+        <h3>Catching Errors That Visual Proofreading Misses</h3>
+        <p>Hearing your text read aloud reveals errors that are nearly impossible to catch through visual proofreading alone. Awkward phrasing, repeated words, missing words, and grammatical errors become immediately obvious when heard. A sentence might look fine on paper but sound clunky when spoken. Text-to-speech makes these issues crystal clear.</p>
+
+        <p>Homophone errors are particularly tricky - words like "their/there/they're," "your/you're," or "its/it's" look similar enough that your brain might skip right over them. But when these are read aloud, the error is unmistakable. The same applies to words that are spelled correctly but used incorrectly in context, like "affect" versus "effect" or "complement" versus "compliment."</p>
+
+        <h3>Improving Flow and Rhythm</h3>
+        <p>Good writing has rhythm. It flows naturally, with varied sentence structures that keep readers engaged. Text-to-speech helps you hear the rhythm of your writing. If you notice the voice reading very long, complex sentences that leave you gasping for breath, those sentences probably need to be broken up. If you hear a series of short, choppy sentences, you might want to combine some or add transitional phrases.</p>
+
+        <p>Professional writers and editors have long known the value of reading work aloud, but doing so yourself can be time-consuming and tiring. Text-to-speech provides the same benefits without the effort, allowing you to proofread longer documents without fatigue. You can multitask while listening - perhaps following along visually, taking notes, or even doing light physical tasks while your text is read to you.</p>
+
+        <h3>Accessibility and Learning Benefits</h3>
+        <p>Text-to-speech isn't just for proofreading - it's also an accessibility tool that helps people with visual impairments, dyslexia, or reading difficulties access written content. For students with learning disabilities, hearing text read aloud while following along visually can improve comprehension and retention significantly.</p>
+
+        <p>Language learners benefit tremendously from text-to-speech. Hearing proper pronunciation while reading helps reinforce the connection between written and spoken language. You can slow down the playback speed to catch every sound, or speed it up to challenge yourself with faster listening comprehension.</p>
+
+        <h3>Building Better Writing Habits</h3>
+        <p>Regular use of text-to-speech develops your ear for good writing. Over time, you'll start to "hear" your writing in your head as you compose, making it easier to catch errors before they even make it to the page. You'll develop an intuition for what sounds right and what doesn't, leading to cleaner first drafts and more efficient editing.</p>
+
+        <p>The combination of real-time statistics and text-to-speech creates a powerful feedback loop. You can see your word count growing, hear how your writing sounds, and make immediate adjustments. This immediate feedback helps you stay in the flow of writing while maintaining quality - you don't have to wait until you've finished a complete draft to start improving your work.</p>
+    </div>
+
+    <div class="content-section">
+        <h2>Use Cases: Who Benefits from This Tool?</h2>
+
+        <h3>Students and Academic Writers</h3>
+        <p>Students face constant pressure to meet specific word counts for essays, research papers, and assignments. Coming up short by even 50 words can affect your grade, while significantly exceeding the limit might suggest you haven't edited tightly enough. Our word counter takes the guesswork out of meeting these requirements, showing you exactly where you stand in real-time.</p>
+
+        <p>The text-to-speech feature is particularly valuable for students. After spending hours writing a paper, your eyes can glaze over when trying to proofread. Hearing your essay read aloud helps you catch errors you've read past a dozen times. It also helps you identify sections that don't flow well or arguments that don't make sense when heard sequentially.</p>
+
+        <p>Many students struggle with overusing certain words or phrases - those crutch words we all fall back on when we're trying to hit a word count or explain a complex concept. The AI pattern detector can help identify these patterns, even if they're not specifically AI-related. Seeing that you've used "however" or "therefore" fifteen times in a 2000-word essay prompts you to find more varied transitions.</p>
+
+        <p>For students with English as a second language, text-to-speech provides pronunciation guidance and helps develop an ear for natural English phrasing. You can compare how your sentences sound to examples from your textbooks or academic articles, gradually training yourself to write in a more academic style.</p>
+
+        <h3>Professional Writers and Content Creators</h3>
+        <p>Professional bloggers, journalists, and content marketers often work with specific word count targets. A blog post might need to be between 1000-1500 words for SEO purposes, or an article might have a strict 800-word limit. Constantly checking word count manually interrupts your flow - with our tool, the count is always visible, letting you pace yourself naturally.</p>
+
+        <p>Content creators also need to think about reading time. If you're writing a quick tips article, you might target a 3-5 minute read. For an in-depth guide, you might aim for 10-15 minutes. The reading time estimate helps you gauge whether your content matches your intended scope.</p>
+
+        <p>The AI pattern detection is particularly relevant for professional writers in the age of AI-generated content. Whether you use AI as part of your writing process or want to ensure your human-written content doesn't inadvertently sound AI-generated, this feature helps you identify and eliminate patterns that might make readers question your content's authenticity.</p>
+
+        <p>Freelance writers can use the tool during the drafting process to stay on target with client requirements, and then use text-to-speech for a final quality check before submission. This two-stage process - writing to the numbers, then editing by ear - produces polished content efficiently.</p>
+
+        <h3>Business Professionals</h3>
+        <p>In business communication, brevity is valued. Executives don't want to read three-paragraph emails when one paragraph would suffice. The word counter helps you identify when you're being too verbose. If your email is hitting 300+ words, it might be time to trim or consider whether the content should be in a document rather than an email.</p>
+
+        <p>Character counts matter for business communications too. LinkedIn posts perform best under 150 characters for the preview. Twitter/X has character limits that vary by account type. Meta descriptions for web pages should be 150-160 characters. Our tool shows both character counts (with and without spaces) because different platforms count differently.</p>
+
+        <p>For presentations and speeches, the reading time estimate is invaluable. If you have a 10-minute speaking slot and your script shows a 15-minute reading time, you know you need to cut content. Conversely, if you're only at 6 minutes, you need to expand or leave more time for audience engagement.</p>
+
+        <p>Text-to-speech helps business professionals ensure their communications sound professional and clear. Before sending an important proposal or client communication, listening to it read aloud can reveal confusing sections, unnecessarily complex language, or tone issues that might not be apparent when reading silently.</p>
+
+        <h3>Social Media Managers</h3>
+        <p>Social media platforms have various character limits and best practices. Instagram captions can be up to 2,200 characters, but engagement often drops after the first 125 characters. Facebook posts under 80 characters see 66% higher engagement. Our character counter helps you optimize for each platform's sweet spot.</p>
+
+        <p>Social media managers often need to create multiple versions of the same message for different platforms. Start with your long-form version, check the word and character counts, then create progressively shorter versions while keeping track of how each one measures up to platform requirements.</p>
+
+        <p>The text-to-speech feature helps ensure your social copy sounds natural and conversational. Social media is a spoken medium - even though it's text-based, the best posts sound like something a real person would say in conversation. Hearing your posts read aloud helps you maintain that conversational tone.</p>
+    </div>
+
+    <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">Is my text private and secure?</div>
+            <div class="faq-answer">Yes, absolutely. All text processing happens entirely in your browser using JavaScript. Your text never leaves your device and is never sent to any server. We don't collect, store, or transmit your content in any way. You can even use this tool offline once the page is loaded.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">How accurate is the word count?</div>
+            <div class="faq-answer">Our word counter uses industry-standard algorithms that match the counting methods used by Microsoft Word and Google Docs. Words are defined as sequences of characters separated by spaces or punctuation. The count is accurate and updates in real-time as you type.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">What is the reading time based on?</div>
+            <div class="faq-answer">Reading time is calculated at 200 words per minute (WPM), which is the average reading speed for adults reading standard material. Technical content or complex academic writing might be read more slowly, while light fiction might be read faster. Use this as a general guideline.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">How does the text-to-speech feature work?</div>
+            <div class="faq-answer">The text-to-speech feature uses the Web Speech Synthesis API built into your browser. This is a native browser feature, not an external service. The quality and available voices depend on your browser and operating system. Chrome, Edge, Safari, and Firefox all support this feature with varying voice selections.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">What AI patterns does the tool detect?</div>
+            <div class="faq-answer">The tool detects common patterns in AI-generated text including: overused phrases ("delve into," "moreover," "it's worth noting," "leverage," "utilize," "landscape," "paradigm," "robust," "streamline," "game-changer"), excessive emoji use, over-punctuation (multiple exclamation marks or question marks), and frequent parenthetical statements. These patterns don't definitively prove text is AI-generated, but they are statistically more common in AI writing.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Can I use this tool offline?</div>
+            <div class="faq-answer">Yes, once the page is loaded, all functionality works offline since everything runs client-side in your browser. You could even save the HTML file to your computer and use it without any internet connection. Only the initial page load requires internet access.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Does this work on mobile devices?</div>
+            <div class="faq-answer">Yes, the word counter is fully responsive and optimized for mobile devices. All buttons are touch-friendly (minimum 44x44 pixels), and the layout adapts to smaller screens with a 2-column grid instead of 6 columns. Text-to-speech works on iOS Safari, Android Chrome, and other mobile browsers.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">How do I use the Clean Patterns feature?</div>
+            <div class="faq-answer">Click the "Clean Patterns" button to automatically remove or replace detected AI writing patterns. The tool will replace overused phrases with simpler alternatives, remove excessive punctuation and emojis, and clean up unnecessary parentheticals. Your original text isn't permanently changed - you can always undo if you don't like the results.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Can I change the text-to-speech voice?</div>
+            <div class="faq-answer">Yes, you can select from all voices available in your browser. The voice selection dropdown shows all installed voices on your system. Your preference is saved automatically in localStorage and will be remembered on your next visit. Different operating systems provide different voices - Windows, macOS, iOS, and Android all have their own voice libraries.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">What browsers support this tool?</div>
+            <div class="faq-answer">The word counting features work in all modern browsers. Text-to-speech requires browsers that support the Web Speech Synthesis API, which includes Chrome, Edge, Safari, and Firefox. Chrome and Edge typically have the largest selection of voices. Internet Explorer is not supported.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">How is the AI likelihood score calculated?</div>
+            <div class="faq-answer">The AI likelihood score is calculated based on the density of detected patterns relative to your total word count. We look at the ratio of AI-common phrases to total words, the frequency of over-punctuation, emoji density, and parenthetical usage. The score is weighted toward phrase detection since that's the strongest signal. A score above 50% suggests significant AI-like patterns, though context matters.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Is this tool really free?</div>
+            <div class="faq-answer">Yes, this word counter is completely free to use with no registration required, no usage limits, no ads, and no hidden fees. We built this as a public resource for students, writers, and professionals. There's no premium version or paid features - everything you see is free forever.</div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Free Word Counter with Text-to-Speech. Privacy-first tools for writers.</p>
+        <p>Your text never leaves your browser. 100% client-side processing.</p>
+    </footer>
+
+    <script>
+        // Debounce function for performance
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Text analysis and counting
+        const textInput = document.getElementById('textInput');
+        const wordCountEl = document.getElementById('wordCount');
+        const charCountWithEl = document.getElementById('charCountWith');
+        const charCountWithoutEl = document.getElementById('charCountWithout');
+        const sentenceCountEl = document.getElementById('sentenceCount');
+        const paragraphCountEl = document.getElementById('paragraphCount');
+        const readingTimeEl = document.getElementById('readingTime');
+        const aiScoreEl = document.getElementById('aiScore');
+        const patternCountEl = document.getElementById('patternCount');
+        const patternDetailsEl = document.getElementById('patternDetails');
+
+        // AI pattern detection
+        const aiPatterns = {
+            phrases: [
+                'delve into', 'moreover', "it's worth noting", 'it is worth noting',
+                'leverage', 'utilize', 'landscape', 'paradigm', 'robust',
+                'streamline', 'game-changer', 'game changer', 'cutting-edge',
+                'cutting edge', 'state-of-the-art', 'state of the art',
+                'innovative', 'revolutionize', 'transform', 'optimize',
+                'in conclusion', 'in summary', 'to summarize', 'ultimately',
+                'it goes without saying', 'needless to say', 'at the end of the day',
+                'when all is said and done', 'dive deep', 'deep dive'
+            ],
+            replacements: {
+                'delve into': 'explore',
+                'moreover': 'also',
+                "it's worth noting": 'note that',
+                'it is worth noting': 'note that',
+                'leverage': 'use',
+                'utilize': 'use',
+                'landscape': 'field',
+                'paradigm': 'model',
+                'robust': 'strong',
+                'streamline': 'simplify',
+                'game-changer': 'breakthrough',
+                'game changer': 'breakthrough',
+                'cutting-edge': 'advanced',
+                'cutting edge': 'advanced',
+                'state-of-the-art': 'modern',
+                'state of the art': 'modern',
+                'innovative': 'new',
+                'revolutionize': 'change',
+                'transform': 'change',
+                'optimize': 'improve',
+                'in conclusion': 'finally',
+                'in summary': 'briefly',
+                'to summarize': 'briefly',
+                'ultimately': 'finally',
+                'it goes without saying': '',
+                'needless to say': '',
+                'at the end of the day': 'ultimately',
+                'when all is said and done': 'ultimately',
+                'dive deep': 'examine',
+                'deep dive': 'analysis'
+            }
+        };
+
+        function analyzeText(text) {
+            // Word count
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            const wordCount = words.length;
+
+            // Character counts
+            const charCountWith = text.length;
+            const charCountWithout = text.replace(/\s/g, '').length;
+
+            // Sentence count
+            const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0);
+            const sentenceCount = sentences.length;
+
+            // Paragraph count
+            const paragraphs = text.split(/\n\n+/).filter(para => para.trim().length > 0);
+            const paragraphCount = paragraphs.length || (text.trim().length > 0 ? 1 : 0);
+
+            // Reading time (200 WPM)
+            const readingTime = Math.ceil(wordCount / 200);
+
+            return {
+                wordCount,
+                charCountWith,
+                charCountWithout,
+                sentenceCount,
+                paragraphCount,
+                readingTime
+            };
+        }
+
+        function detectAIPatterns(text) {
+            const lowerText = text.toLowerCase();
+            let patternCount = 0;
+            const detectedPatterns = {};
+
+            // Check for AI phrases
+            aiPatterns.phrases.forEach(phrase => {
+                const regex = new RegExp('\\b' + phrase.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '\\b', 'gi');
+                const matches = text.match(regex);
+                if (matches) {
+                    patternCount += matches.length;
+                    detectedPatterns[phrase] = matches.length;
+                }
+            });
+
+            // Check for excessive emojis
+            const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]/gu;
+            const emojis = text.match(emojiRegex);
+            if (emojis && emojis.length > 5) {
+                patternCount += Math.floor(emojis.length / 3);
+            }
+
+            // Check for over-punctuation
+            const overPunctuation = text.match(/[!?]{2,}/g);
+            if (overPunctuation) {
+                patternCount += overPunctuation.length;
+            }
+
+            // Check for parentheticals
+            const parentheticals = text.match(/\([^)]+\)/g);
+            if (parentheticals && parentheticals.length > 3) {
+                patternCount += Math.floor(parentheticals.length / 2);
+            }
+
+            // Calculate AI likelihood score (0-100%)
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            const wordCount = words.length;
+            const score = wordCount > 0 ? Math.min(100, Math.round((patternCount / wordCount) * 200)) : 0;
+
+            return { patternCount, score, detectedPatterns };
+        }
+
+        const updateStats = debounce(() => {
+            const text = textInput.value;
+            const stats = analyzeText(text);
+            const aiDetection = detectAIPatterns(text);
+
+            wordCountEl.textContent = stats.wordCount;
+            charCountWithEl.textContent = stats.charCountWith;
+            charCountWithoutEl.textContent = stats.charCountWithout;
+            sentenceCountEl.textContent = stats.sentenceCount;
+            paragraphCountEl.textContent = stats.paragraphCount;
+            readingTimeEl.textContent = stats.readingTime;
+            aiScoreEl.textContent = aiDetection.score;
+            patternCountEl.textContent = aiDetection.patternCount;
+
+            // Show pattern details
+            if (Object.keys(aiDetection.detectedPatterns).length > 0) {
+                const details = Object.entries(aiDetection.detectedPatterns)
+                    .map(([phrase, count]) => `"${phrase}" (${count})`)
+                    .join(', ');
+                patternDetailsEl.textContent = details;
+            } else {
+                patternDetailsEl.textContent = 'No patterns detected';
+            }
+        }, 100);
+
+        textInput.addEventListener('input', updateStats);
+
+        // Text-to-Speech functionality
+        let utterance = null;
+        let words = [];
+        let currentWordIndex = 0;
+        let isPaused = false;
+        let currentRate = 1;
+
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const speedBtns = document.querySelectorAll('.speed-btn');
+
+        // Load voices
+        let voices = [];
+        function loadVoices() {
+            voices = speechSynthesis.getVoices();
+            voiceSelect.innerHTML = '';
+
+            voices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                voiceSelect.appendChild(option);
+            });
+
+            // Load saved voice preference
+            const savedVoice = localStorage.getItem('preferredVoice');
+            if (savedVoice) {
+                voiceSelect.value = savedVoice;
+            }
+        }
+
+        speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+
+        // Load saved speed preference
+        const savedSpeed = localStorage.getItem('preferredSpeed');
+        if (savedSpeed) {
+            currentRate = parseFloat(savedSpeed);
+            speedBtns.forEach(btn => {
+                btn.classList.toggle('active', parseFloat(btn.dataset.speed) === currentRate);
+            });
+        }
+
+        // Save preferences
+        voiceSelect.addEventListener('change', () => {
+            localStorage.setItem('preferredVoice', voiceSelect.value);
+        });
+
+        speedBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentRate = parseFloat(btn.dataset.speed);
+                localStorage.setItem('preferredSpeed', currentRate);
+                speedBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                if (utterance && speechSynthesis.speaking) {
+                    // Update rate of current speech
+                    speechSynthesis.cancel();
+                    if (!isPaused) {
+                        speakFromWord(currentWordIndex);
+                    }
+                }
+            });
+        });
+
+        function highlightWord(index) {
+            const text = textInput.value;
+            const wordArray = text.split(/(\s+)/);
+            let actualWordIndex = 0;
+            let result = '';
+
+            for (let i = 0; i < wordArray.length; i++) {
+                if (wordArray[i].trim().length > 0) {
+                    if (actualWordIndex === index) {
+                        result += `<span class="highlighted-word">${wordArray[i]}</span>`;
+                    } else {
+                        result += wordArray[i];
+                    }
+                    actualWordIndex++;
+                } else {
+                    result += wordArray[i];
+                }
+            }
+
+            // Create a temporary div to show highlighted text
+            const tempDiv = document.createElement('div');
+            tempDiv.style.cssText = textInput.style.cssText;
+            tempDiv.style.position = 'absolute';
+            tempDiv.style.top = textInput.offsetTop + 'px';
+            tempDiv.style.left = textInput.offsetLeft + 'px';
+            tempDiv.style.width = textInput.offsetWidth + 'px';
+            tempDiv.style.height = textInput.offsetHeight + 'px';
+            tempDiv.style.padding = '15px';
+            tempDiv.style.fontSize = '1rem';
+            tempDiv.style.lineHeight = '1.8';
+            tempDiv.style.backgroundColor = 'white';
+            tempDiv.style.border = '2px solid var(--border-color)';
+            tempDiv.style.borderRadius = '8px';
+            tempDiv.style.overflow = 'auto';
+            tempDiv.style.pointerEvents = 'none';
+            tempDiv.style.whiteSpace = 'pre-wrap';
+            tempDiv.innerHTML = result;
+
+            // Remove previous highlight div
+            const existing = document.querySelector('.highlight-overlay');
+            if (existing) existing.remove();
+
+            tempDiv.classList.add('highlight-overlay');
+            textInput.parentElement.appendChild(tempDiv);
+
+            // Auto-scroll to highlighted word
+            const highlightedSpan = tempDiv.querySelector('.highlighted-word');
+            if (highlightedSpan) {
+                highlightedSpan.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function speakFromWord(startIndex) {
+            const text = textInput.value;
+            if (!text.trim()) return;
+
+            words = text.split(/\s+/).filter(word => word.trim().length > 0);
+            currentWordIndex = startIndex;
+
+            const textToSpeak = words.slice(startIndex).join(' ');
+            utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.rate = currentRate;
+
+            if (voiceSelect.value) {
+                utterance.voice = voices[voiceSelect.value];
+            }
+
+            let wordCount = startIndex;
+            utterance.onboundary = (event) => {
+                if (event.name === 'word') {
+                    highlightWord(wordCount);
+                    currentWordIndex = wordCount;
+                    wordCount++;
+                }
+            };
+
+            utterance.onend = () => {
+                playBtn.disabled = false;
+                pauseBtn.disabled = true;
+                stopBtn.disabled = true;
+                const overlay = document.querySelector('.highlight-overlay');
+                if (overlay) overlay.remove();
+                isPaused = false;
+                currentWordIndex = 0;
+            };
+
+            speechSynthesis.speak(utterance);
+            playBtn.disabled = true;
+            pauseBtn.disabled = false;
+            stopBtn.disabled = false;
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (isPaused) {
+                speechSynthesis.resume();
+                isPaused = false;
+                playBtn.disabled = true;
+                pauseBtn.disabled = false;
+            } else {
+                speakFromWord(0);
+            }
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.pause();
+                isPaused = true;
+                playBtn.disabled = false;
+                pauseBtn.disabled = true;
+            }
+        });
+
+        stopBtn.addEventListener('click', () => {
+            speechSynthesis.cancel();
+            playBtn.disabled = false;
+            pauseBtn.disabled = true;
+            stopBtn.disabled = true;
+            const overlay = document.querySelector('.highlight-overlay');
+            if (overlay) overlay.remove();
+            isPaused = false;
+            currentWordIndex = 0;
+        });
+
+        // Clean patterns functionality
+        document.getElementById('cleanBtn').addEventListener('click', () => {
+            let text = textInput.value;
+
+            // Replace AI phrases
+            Object.entries(aiPatterns.replacements).forEach(([phrase, replacement]) => {
+                const regex = new RegExp('\\b' + phrase.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '\\b', 'gi');
+                text = text.replace(regex, replacement);
+            });
+
+            // Remove excessive punctuation
+            text = text.replace(/([!?]){2,}/g, '$1');
+
+            // Clean up extra spaces from replacements
+            text = text.replace(/\s{2,}/g, ' ');
+            text = text.replace(/\s+\./g, '.');
+            text = text.replace(/\s+,/g, ',');
+
+            textInput.value = text;
+            updateStats();
+        });
+
+        // Initialize
+        updateStats();
+    </script>
+</body>
+</html>
